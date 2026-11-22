@@ -1363,7 +1363,7 @@
     /* ==========================================================================
        1. UKLÁDÁNÍ DAT, GOOGLE SHEETS SYNC A JSON ZÁLOHA
        ========================================================================== */
-    function loadLocalData() {
+function loadLocalData() {
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (raw) {
@@ -1372,14 +1372,11 @@
                     records = parsed;
                 }
             }
-            const savedUrl = localStorage.getItem(SHEET_URL_KEY);
-            if (savedUrl) {
-                sheetUrl = savedUrl;
-                document.getElementById("sheetUrlInput").value = sheetUrl;
+            if (sheetUrl) {
                 updateSyncBadge("Propojeno", true);
             }
         } catch (err) {
-            console.error("Chyba při načítání localStorage:", err);
+            console.error("Chyba při načítání dat:", err);
         }
     }
 
@@ -1396,6 +1393,7 @@
 
     function updateSyncBadge(text, isConnected) {
         const badge = document.getElementById("syncBadge");
+        if (!badge) return;
         badge.textContent = text;
         if (isConnected) {
             badge.classList.add("connected");
@@ -1403,7 +1401,6 @@
             badge.classList.remove("connected");
         }
     }
-
     function saveSheetUrl() {
         const val = document.getElementById("sheetUrlInput").value.trim();
         sheetUrl = val;
