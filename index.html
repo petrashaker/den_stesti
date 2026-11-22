@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Den bez dramat — Klidná mysl, jeden večer po druhém</title>
+    
+    <!-- PWA meta tagy pro přidání na plochu telefonu -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Den bez dramat">
+    <meta name="theme-color" content="#f8faf9">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%234a7c59'/%3E%3Cpath d='M30 52 L44 66 L72 36' fill='none' stroke='%23ffffff' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+    <!-- Google Fonts: Inter & Lora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #f8faf9;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f3;
+            --border-light: #e2e8e4;
+            --text-main: #1f2924;
+            --text-muted: #64746b;
+            --text-light: #8d9c94;
+            
+            --calm-primary: #4a7c59;
+            --calm-hover: #3c6649;
+            --calm-bg: #ebf3ee;
+            --calm-border: #b8d4c1;
+            
+            --drama-primary: #c96459;
+            --drama-hover: #b35247;
+            --drama-bg: #faecea;
+            --drama-border: #eabcb7;
+
+            --shadow-sm: 0 2px 8px rgba(31, 41, 36, 0.04);
+            --shadow-md: 0 8px 24px rgba(31, 41, 36, 0.08);
+            --shadow-lg: 0 16px 40px rgba(31, 41, 36, 0.14);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        button, input, textarea {
+            font-family: inherit;
+        }
+
+        /* Rozvržení hlavní stránky */
+        .container {
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+            flex: 1;
+        }
+
+        /* 1. Horní hlavička */
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .brand h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .sos-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--bg-card);
+            color: var(--calm-primary);
+            border: 1.5px solid var(--calm-border);
+            padding: 10px 18px;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .sos-btn:hover {
+            background-color: var(--calm-bg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .sos-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* 2. Přehled statistik (3 karty) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .stat-value {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+
+        .stat-value.highlight {
+            color: var(--calm-primary);
+        }
+
+        .stat-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* 3. Interaktivní kalendář */
+        .calendar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+        }
+
+        .quick-action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: var(--calm-bg);
+            border: 1px solid var(--calm-border);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+
+        .quick-action-text {
+            font-size: 0.88rem;
+            color: var(--calm-hover);
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: var(--calm-primary);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(74, 124, 89, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--calm-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary.completed {
+            background-color: #ffffff;
+            color: var(--calm-primary);
+            border: 1px solid var(--calm-border);
+            box-shadow: none;
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .month-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn-today-small {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-today-small:hover {
+            background: var(--border-light);
+            color: var(--text-main);
+        }
+
+        .nav-arrows {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-subtle);
+        }
+
+        .weekdays-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .weekday {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-light);
+            padding: 4px 0;
+        }
+
+        .weekday.weekend {
+            color: var(--calm-primary);
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day-cell {
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border-light);
+            background: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.18s cubic-bezier(0.25, 0.8, 0.25, 1);
+            user-select: none;
+        }
+
+        .day-cell:hover {
+            transform: translateY(-2px);
+            border-color: #cbd5cf;
+        }
+
+        .day-cell:active {
+            transform: scale(0.95);
+        }
+
+        .day-cell.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .day-cell.today {
+            box-shadow: 0 0 0 2px var(--bg-card), 0 0 0 4px var(--calm-primary);
+        }
+
+        /* Stav: Klidný den (calm) */
+        .day-cell.calm {
+            background: var(--calm-bg);
+            border-color: var(--calm-border);
+            color: var(--calm-hover);
+        }
+
+        /* Stav: Den s dramatem (drama) */
+        .day-cell.drama {
+            background: var(--drama-bg);
+            border-color: var(--drama-border);
+            color: var(--drama-primary);
+        }
+
+        .day-num {
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .day-cell.drama .day-num {
+            position: relative;
+        }
+
+        .day-cell.drama .day-num::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            right: -4px;
+            top: 50%;
+            height: 2px;
+            background: var(--drama-primary);
+            transform: rotate(-18deg);
+            border-radius: 2px;
+        }
+
+        .day-status-icon {
+            margin-top: 4px;
+            font-size: 0.85rem;
+            line-height: 1;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .note-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--calm-primary);
+        }
+
+        .day-cell.drama .note-dot {
+            background-color: var(--drama-primary);
+        }
+
+        .calendar-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-light);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .legend-box.calm {
+            background: var(--calm-bg);
+            border: 1px solid var(--calm-border);
+            color: var(--calm-primary);
+        }
+
+        .legend-box.drama {
+            background: var(--drama-bg);
+            border: 1px solid var(--drama-border);
+            color: var(--drama-primary);
+        }
+
+        /* 6. Sbalitelná sekce Synchronizace a Záloha */
+        .sync-details {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .sync-summary {
+            padding: 16px 20px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .sync-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .sync-status-badge {
+            font-size: 0.76rem;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 99px;
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+        }
+
+        .sync-status-badge.connected {
+            background: var(--calm-bg);
+            color: var(--calm-primary);
+        }
+
+        .sync-body {
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .sync-section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .sync-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .text-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-main);
+            font-size: 0.85rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: var(--calm-primary);
+            background: #ffffff;
+        }
+
+        .btn-secondary {
+            background: var(--bg-subtle);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+        }
+
+        .btn-danger-ghost {
+            background: transparent;
+            color: var(--drama-primary);
+            border: 1px solid var(--drama-border);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-danger-ghost:hover {
+            background: var(--drama-bg);
+        }
+
+        /* Modální okna */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(24, 32, 28, 0.45);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 100;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-box.wide {
+            max-width: 560px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--border-light);
+            color: var(--text-main);
+        }
+
+        /* Citát v modálním okně */
+        .quote-card {
+            background: var(--calm-bg);
+            border-left: 4px solid var(--calm-primary);
+            padding: 16px 18px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 16px 0;
+        }
+
+        .quote-text {
+            font-family: 'Lora', Georgia, serif;
+            font-style: italic;
+            font-size: 1.02rem;
+            color: var(--text-main);
+            line-height: 1.55;
+        }
+
+        .quote-author {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--calm-hover);
+            margin-top: 8px;
+        }
+
+        .note-textarea {
+            width: 100%;
+            min-height: 82px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-main);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            resize: vertical;
+            outline: none;
+            margin-top: 6px;
+        }
+
+        .note-textarea:focus {
+            border-color: var(--calm-primary);
+            background: #ffffff;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* 5. Režim 'Vyčistit hlavu' (SOS Modal) */
+        .sos-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            background: var(--bg-subtle);
+            padding: 5px;
+            border-radius: 14px;
+            margin: 16px 0 20px;
+        }
+
+        .sos-tab {
+            padding: 9px 6px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .sos-tab.active {
+            background: var(--bg-card);
+            color: var(--calm-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sos-panel {
+            display: none;
+        }
+
+        .sos-panel.active {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        /* Aktivita A: Uzemnění 5-4-3-2-1 */
+        .grounding-progress {
+            height: 6px;
+            background: var(--bg-subtle);
+            border-radius: 99px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .grounding-bar {
+            height: 100%;
+            background: var(--calm-primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .grounding-prompt {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .grounding-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .grounding-checks {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .grounding-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-light);
+            background: var(--bg-main);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .grounding-item.checked {
+            background: var(--calm-bg);
+            border-color: var(--calm-primary);
+            color: var(--calm-hover);
+            text-decoration: line-through;
+        }
+
+        .grounding-circle {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--calm-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .grounding-item.checked .grounding-circle {
+            background: var(--calm-primary);
+            border-color: var(--calm-primary);
+            color: #ffffff;
+        }
+
+        /* Aktivita B: Schulte tabulka 1-25 */
+        .schulte-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            background: var(--bg-subtle);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .schulte-target {
+            font-weight: 700;
+            color: var(--calm-primary);
+            font-size: 1.05rem;
+        }
+
+        .schulte-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            max-width: 340px;
+            margin: 0 auto 14px;
+        }
+
+        .schulte-cell {
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-light);
+            background: var(--bg-main);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.12s;
+        }
+
+        .schulte-cell:hover {
+            background: var(--bg-subtle);
+        }
+
+        .schulte-cell.found {
+            background: var(--calm-bg);
+            border-color: var(--calm-border);
+            color: var(--calm-primary);
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .schulte-cell.wrong {
+            background: var(--drama-bg);
+            border-color: var(--drama-primary);
+            animation: shake 0.25s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* Aktivita C: Krabicové dýchání 4-4-4-4 */
+        .breath-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0 8px;
+        }
+
+        .breath-stage {
+            width: 190px;
+            height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .breath-ring-outer {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 2px dashed var(--calm-border);
+        }
+
+        .breath-circle {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--calm-primary), #689c78);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(74, 124, 89, 0.3);
+            transition: transform 4s linear;
+            text-align: center;
+            padding: 8px;
+        }
+
+        .breath-circle.expand {
+            transform: scale(1.85);
+        }
+
+        .breath-circle.hold-large {
+            transform: scale(1.85);
+            transition: none;
+        }
+
+        .breath-circle.shrink {
+            transform: scale(1);
+        }
+
+        .breath-circle.hold-small {
+            transform: scale(1);
+            transition: none;
+        }
+
+        .breath-phase-text {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            line-height: 1.2;
+        }
+
+        .breath-count {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* Toast notifikace */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-main);
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            z-index: 200;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responzivita pro menší telefony */
+        @media (max-width: 520px) {
+            .stats-grid {
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px 10px;
+            }
+            .stat-value {
+                font-size: 1.35rem;
+            }
+            .stat-label {
+                font-size: 0.68rem;
+            }
+            .calendar-card {
+                padding: 14px;
+            }
+            .days-grid {
+                gap: 5px;
+            }
+            .day-num {
+                font-size: 0.85rem;
+            }
+            .sos-tab {
+                font-size: 0.74rem;
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. Horní hlavička -->
+    <header>
+        <div class="brand">
+            <h1>
+                <span>Den bez dramat</span>
+                <span aria-hidden="true">🌿</span>
+            </h1>
+            <p>Klidná mysl, jeden večer po druhém</p>
+        </div>
+
+        <button type="button" class="sos-btn" onclick="openSosModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <span>Vyčistit hlavu</span>
+        </button>
+    </header>
+
+    <!-- 2. Přehled statistik (3 karty) -->
+    <section class="stats-grid" aria-label="Statistiky klidu">
+        <div class="stat-card">
+            <div class="stat-label">
+                <span>Aktuální série</span>
+                <span aria-hidden="true">🔥</span>
+            </div>
+            <div class="stat-value-row">
+                <span class="stat-value highlight" id="statCurrentStreak">0</span>
+                <span class="stat-sub" id="statCurrentUnit">dní</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">
+                <span>Nejdelší rekord</span>
+                <span aria-hidden="true">🏆</span>
+            </div>
+            <div class="stat-value-row">
+                <span class="stat-value" id="statLongestStreak">0</span>
+                <span class="stat-sub" id="statLongestUnit">dní</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">
+                <span>Tento měsíc</span>
+                <span aria-hidden="true">✨</span>
+            </div>
+            <div class="stat-value-row">
+                <span class="stat-value highlight" id="statMonthCount">0</span>
+                <span class="stat-sub" id="statMonthPercent">(0 %)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Interaktivní kalendář -->
+    <section class="calendar-card">
+        <!-- Rychlé akční tlačítko pro dnešek -->
+        <div class="quick-action-bar">
+            <span class="quick-action-text" id="quickTodayHint">Jaký byl tvůj dnešní den?</span>
+            <button type="button" class="btn-primary" id="quickTodayBtn" onclick="handleQuickToday()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span id="quickTodayBtnText">Dnešek byl bez dramat</span>
+            </button>
+        </div>
+
+        <!-- Navigace měsíce -->
+        <div class="calendar-header">
+            <div class="month-title-group">
+                <h2 class="month-title" id="monthTitle">Listopad 2026</h2>
+                <button type="button" class="btn-today-small" onclick="goToToday()">Dnes</button>
+            </div>
+            <div class="nav-arrows">
+                <button type="button" class="btn-icon" onclick="changeMonth(-1)" aria-label="Předchozí měsíc">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <button type="button" class="btn-icon" onclick="changeMonth(1)" aria-label="Další měsíc">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dny v týdnu Po–Ne -->
+        <div class="weekdays-row">
+            <div class="weekday">Po</div>
+            <div class="weekday">Út</div>
+            <div class="weekday">St</div>
+            <div class="weekday">Čt</div>
+            <div class="weekday">Pá</div>
+            <div class="weekday weekend">So</div>
+            <div class="weekday weekend">Ne</div>
+        </div>
+
+        <!-- Mřížka kalendáře -->
+        <div class="days-grid" id="daysGrid"></div>
+
+        <!-- Legenda -->
+        <div class="calendar-legend">
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="legend-box calm">✓</span>
+                    <span>Bez dramat</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-box drama">✕</span>
+                    <span>Bylo drama</span>
+                </div>
+                <div class="legend-item">
+                    <span style="width:7px;height:7px;border-radius:50%;background:var(--calm-primary);display:inline-block;"></span>
+                    <span>Poznámka</span>
+                </div>
+            </div>
+            <span>Kliknutím na den přepínáš stav</span>
+        </div>
+    </section>
+
+    <!-- 6. Ukládání dat, Google Sheets synchronizace a JSON záloha -->
+    <details class="sync-details">
+        <summary class="sync-summary">
+            <span>☁️ Synchronizace (Google Sheets) a JSON záloha</span>
+            <span class="sync-status-badge" id="syncBadge">Pouze v prohlížeči</span>
+        </summary>
+        <div class="sync-body">
+            <!-- Google Sheets sekce 
+             <!--
+            <div>
+                <div class="sync-section-title">Propojení s Google Tabulkou (Apps Script URL)</div>
+                <p class="sync-desc">Vlož URL adresu své nasazené webové aplikace z Google Apps Scriptu pro automatickou synchronizaci mezi mobilem a PC.</p>
+                <div class="input-group">
+                    <input type="url" id="sheetUrlInput" class="text-input" placeholder="https://script.google.com/macros/s/AKfycbyAP9K3n8VM-CZS6xPoZTzZ7XtOnj_eJDnVlhlwKepyhtf_TmidygiHlULUH_lfvbUs/exec">
+                    <button type="button" class="btn-primary" onclick="saveSheetUrl()">Uložit URL</button>
+                    <button type="button" class="btn-secondary" onclick="syncFromCloud(true)">Synchronizovat nyní</button>
+                </div>
+            </div>
+            -->
+            <!-- JSON záloha sekce -->
+            <div>
+                <div class="sync-section-title">Záloha dat do souboru (JSON)</div>
+                <p class="sync-desc">Stáhni si kopii všech dnů a poznámek nebo ji nahraj zpět ze souboru.</p>
+                <div class="input-group">
+                    <button type="button" class="btn-secondary" onclick="exportJsonBackup()">⬇️ Stáhnout JSON zálohu</button>
+                    <label class="btn-secondary" style="cursor:pointer;">
+                        ⬆️ Nahrát ze souboru JSON
+                        <input type="file" id="importJsonInput" accept=".json" style="display:none;" onchange="importJsonBackup(event)">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </details>
+</div>
+
+<!-- 4. MODÁLNÍ OKNO: Detail dne & Motivační citát -->
+<div class="modal-backdrop" id="dayModal" onclick="closeModalOnBackdrop(event, 'dayModal')">
+    <div class="modal-box">
+        <button type="button" class="modal-close" onclick="closeDayModal()" aria-label="Zavřít">✕</button>
+        
+        <div style="font-size:0.8rem;font-weight:600;color:var(--calm-primary);text-transform:uppercase;letter-spacing:0.04em;" id="dayModalDateLabel">
+            22. listopadu 2026
+        </div>
+        <h3 style="font-size:1.3rem;font-weight:700;margin-top:2px;" id="dayModalTitle">
+            Klidný den bez dramat 🌿
+        </h3>
+
+        <!-- Citát (zobrazuje se primárně u klidného dne) -->
+        <div class="quote-card" id="dayModalQuoteBox">
+            <div class="quote-text" id="dayModalQuoteText">„Klid nepřichází tehdy, když zmizí všechny problémy, ale když se rozhodneš, že jim nedáš svou energii.“</div>
+            <div class="quote-author" id="dayModalQuoteAuthor">— Neznámý autor</div>
+        </div>
+
+        <div style="margin-top:14px;">
+            <label for="dayModalNote" style="font-size:0.84rem;font-weight:600;color:var(--text-muted);" id="dayModalNoteLabel">
+                Krátká večerní poznámka / za co jsi dnes vděčný/á:
+            </label>
+            <textarea id="dayModalNote" class="note-textarea" placeholder="Napiš si pár slov k dnešnímu dni..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn-secondary" id="toggleStatusBtn" onclick="toggleSelectedDayStatus()">
+                    Přepnout na „Bylo drama“
+                </button>
+                <button type="button" class="btn-danger-ghost" onclick="clearSelectedDayStatus()">
+                    Zrušit stav
+                </button>
+            </div>
+            <button type="button" class="btn-primary" onclick="saveDayModal()">Uložit</button>
+        </div>
+    </div>
+</div>
+
+<!-- 5. MODÁLNÍ OKNO: Režim 'Vyčistit hlavu' (SOS soustředění) -->
+<div class="modal-backdrop" id="sosModal" onclick="closeModalOnBackdrop(event, 'sosModal')">
+    <div class="modal-box wide">
+        <button type="button" class="modal-close" onclick="closeSosModal()" aria-label="Zavřít">✕</button>
+        
+        <h3 style="font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:8px;">
+            <span>Vyčistit hlavu</span>
+            <span aria-hidden="true">🧘</span>
+        </h3>
+        <p style="font-size:0.86rem;color:var(--text-muted);margin-top:2px;">
+            Zastav kolotoč myšlenek a přepni pozornost jinam. Vyber si jednu z technik:
+        </p>
+
+        <!-- Přepínací záložky -->
+        <div class="sos-tabs">
+            <button type="button" class="sos-tab active" data-tab="grounding" onclick="switchSosTab('grounding')">
+                Uzemnění 5–4–3–2–1
+            </button>
+            <button type="button" class="sos-tab" data-tab="schulte" onclick="switchSosTab('schulte')">
+                Mřížka 1–25
+            </button>
+            <button type="button" class="sos-tab" data-tab="breathing" onclick="switchSosTab('breathing')">
+                Dýchání 4–4–4–4
+            </button>
+        </div>
+
+        <!-- PANEL A: Uzemnění 5-4-3-2-1 -->
+        <div class="sos-panel active" id="panel-grounding">
+            <div class="grounding-progress">
+                <div class="grounding-bar" id="groundingBar"></div>
+            </div>
+            <div id="groundingContent"></div>
+            <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;">
+                <button type="button" class="btn-secondary" onclick="resetGrounding()">Začít znovu</button>
+                <span style="font-size:0.8rem;color:var(--text-muted);" id="groundingStepCounter">Krok 1 z 5</span>
+            </div>
+        </div>
+
+        <!-- PANEL B: Postřehová mřížka (Schulte tabulka 1-25) -->
+        <div class="sos-panel" id="panel-schulte">
+            <div class="schulte-header">
+                <div>Hledej číslo: <span class="schulte-target" id="schulteNextNum">1</span></div>
+                <div>Čas: <strong id="schulteTimer">0.0 s</strong></div>
+                <div>Rekord: <strong id="schulteBest">—</strong></div>
+            </div>
+            <div class="schulte-grid" id="schulteGrid"></div>
+            <div style="text-align:center;">
+                <button type="button" class="btn-secondary" onclick="initSchulteGame()">🔄 Nová hra</button>
+            </div>
+        </div>
+
+        <!-- PANEL C: Krabicové dýchání (4-4-4-4) -->
+        <div class="sos-panel" id="panel-breathing">
+            <div class="breath-wrapper">
+                <div class="breath-stage">
+                    <div class="breath-ring-outer"></div>
+                    <div class="breath-circle" id="breathCircle">
+                        <div class="breath-phase-text" id="breathPhaseText">Připrav se</div>
+                        <div class="breath-count" id="breathCount">4</div>
+                    </div>
+                </div>
+                <p style="font-size:0.84rem;color:var(--text-muted);text-align:center;max-width:340px;margin-bottom:14px;">
+                    Sleduj kruh: 4 sekundy nádech, 4 sekundy zádrž, 4 sekundy výdech, 4 sekundy zádrž.
+                </p>
+                <button type="button" class="btn-primary" id="breathToggleBtn" onclick="toggleBreathing()">Spustit dýchání</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast notifikace -->
+<div class="toast" id="toast">Uloženo</div>
+
+<script>
+    /**
+     * Sbírka 32 českých motivačních citátů o vnitřním klidu, nadhledu a stoicismu
+     */
+    const QUOTES = [
+        { text: "Klid nepřichází tehdy, když zmizí všechny problémy, ale když se rozhodneš, že jim nedáš svou energii.", author: "Neznámý autor" },
+        { text: "Máš plnou moc nad svou myslí, ne nad vnějšími událostmi. Uvědom si to a najdeš sílu.", author: "Marcus Aurelius" },
+        { text: "Ne každá akce vyžaduje tvou reakci. Někdy je největší silou prosté ticho a nadhled.", author: "Stoická moudrost" },
+        { text: "Vnitřní mír začíná ve chvíli, kdy nedovolíš jiné osobě nebo situaci, aby ovládala tvé emoce.", author: "Neznámý autor" },
+        { text: "Dramata potřebují publikum. Když odejdeš ze sálu, představení končí.", author: "Neznámý autor" },
+        { text: "Zhluboka se nadechni. Je to jen špatný okamžik, ne špatný život.", author: "Neznámý autor" },
+        { text: "Když pustíš to, co nemůžeš ovlivnit, uvolníš ruce pro to, co ovlivnit můžeš.", author: "Neznámý autor" },
+        { text: "Chraň svůj klid jako ten nejvzácnější poklad. Ne každý si zaslouží přístup k tvé energii.", author: "Neznámý autor" },
+        { text: "Štěstí tvého života závisí na kvalitě tvých myšlenek.", author: "Marcus Aurelius" },
+        { text: "Nenech cizí bouři, aby potopila tvou klidnou loď.", author: "Neznámý autor" },
+        { text: "Vyber si raději klid než potřebu mít za každou cenu pravdu.", author: "Wayne Dyer" },
+        { text: "Ticho je často ta nejlepší odpověď na zbytečné drama.", author: "Přísloví" },
+        { text: "Neztrácej čas hádáním se o věcech, na kterých za pět let nebude vůbec záležet.", author: "Neznámý autor" },
+        { text: "Klidná mysl přináší vnitřní sílu a sebedůvěru.", author: "Dalajláma" },
+        { text: "Nemůžeš zastavit vlny, ale můžeš se naučit surfovat.", author: "Jon Kabat-Zinn" },
+        { text: "Kdo žije v souladu sám se sebou, žije v souladu s celým vesmírem.", author: "Marcus Aurelius" },
+        { text: "Laskavost k sobě samému je prvním krokem ke klidnému večeru.", author: "Neznámý autor" },
+        { text: "Zpomal. Všechno, co má přijít, přijde ve správný čas.", author: "Neznámý autor" },
+        { text: "Vděčnost proměňuje to, co máme, v dostatek.", author: "Melody Beattie" },
+        { text: "Tvá hodnota nezávisí na tom, jak chaotický je svět kolem tebe.", author: "Neznámý autor" },
+        { text: "Každý večer bez zbytečného stresu je malým dárkem pro tvé zdraví.", author: "Neznámý autor" },
+        { text: "Když je mysl klidná, i ty nejtěžší věci se zdají lehčí.", author: "Neznámý autor" },
+        { text: "Nech minulost minulostí a užij si ticho tohoto večera.", author: "Neznámý autor" },
+        { text: "Trpělivost a nadhled dokážou rozpustit i ten největší mrak.", author: "Neznámý autor" },
+        { text: "Jsi kapitánem své vlastní nálady. Dnes jsi kormidloval/a skvěle.", author: "Den bez dramat" },
+        { text: "Skutečná svoboda je schopnost nechat věci plynout bez nutnosti je kontrolovat.", author: "Neznámý autor" },
+        { text: "Dobrý spánek začíná klidným svědomím a čistou hlavou.", author: "Přísloví" },
+        { text: "Více trpíme ve své představivosti než ve skutečnosti.", author: "Seneca" },
+        { text: "To, co tě rozčiluje, tě ovládá. Dnes jsi zůstal/a svobodný/á.", author: "Stoické přísloví" },
+        { text: "Méně spěchu, méně hluku, více přítomného okamžiku.", author: "Neznámý autor" },
+        { text: "I malý krok ke klidu je velkým vítězstvím nad chaosem.", author: "Den bez dramat" },
+        { text: "Nepotřebuješ vyhrát každou bitvu, abys vyhrál/a svůj vnitřní mír.", author: "Neznámý autor" }
+    ];
+
+    const MONTHS_CZ = [
+        "Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
+        "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"
+    ];
+
+    const MONTHS_GENITIVE_CZ = [
+        "ledna", "února", "března", "dubna", "května", "června",
+        "července", "srpna", "září", "října", "listopadu", "prosince"
+    ];
+
+    const STORAGE_KEY = "den_bez_dramat_records_v2";
+    const SHEET_URL_KEY = "den_bez_dramat_sheet_url";
+    const SCHULTE_BEST_KEY = "den_bez_dramat_schulte_best";
+
+    // Hlavní stav aplikace
+    let records = {}; // { "YYYY-MM-DD": { status: "calm" | "drama", note: "..." } }
+    let sheetUrl = "";
+    const today = new Date();
+    let viewYear = today.getFullYear();
+    let viewMonth = today.getMonth();
+    let selectedDateKey = null;
+
+    // Inicializace po načtení DOM
+    document.addEventListener("DOMContentLoaded", () => {
+        loadLocalData();
+        renderCalendar();
+        updateStats();
+        updateQuickTodayUI();
+
+        if (sheetUrl) {
+            syncFromCloud(false);
+        }
+    });
+
+    /* ==========================================================================
+       1. UKLÁDÁNÍ DAT, GOOGLE SHEETS SYNC A JSON ZÁLOHA
+       ========================================================================== */
+    function loadLocalData() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === "object") {
+                    records = parsed;
+                }
+            }
+            const savedUrl = localStorage.getItem(SHEET_URL_KEY);
+            if (savedUrl) {
+                sheetUrl = savedUrl;
+                document.getElementById("sheetUrlInput").value = sheetUrl;
+                updateSyncBadge("Propojeno", true);
+            }
+        } catch (err) {
+            console.error("Chyba při načítání localStorage:", err);
+        }
+    }
+
+    function saveLocalData(pushToCloud = true) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        } catch (err) {
+            console.error("Chyba při ukládání do localStorage:", err);
+        }
+        if (pushToCloud && sheetUrl) {
+            syncToCloud();
+        }
+    }
+
+    function updateSyncBadge(text, isConnected) {
+        const badge = document.getElementById("syncBadge");
+        badge.textContent = text;
+        if (isConnected) {
+            badge.classList.add("connected");
+        } else {
+            badge.classList.remove("connected");
+        }
+    }
+
+    function saveSheetUrl() {
+        const val = document.getElementById("sheetUrlInput").value.trim();
+        sheetUrl = val;
+        if (sheetUrl) {
+            localStorage.setItem(SHEET_URL_KEY, sheetUrl);
+            updateSyncBadge("Synchronizuji...", true);
+            syncFromCloud(true);
+        } else {
+            localStorage.removeItem(SHEET_URL_KEY);
+            updateSyncBadge("Pouze v prohlížeči", false);
+            showToast("URL adresa odebrána");
+        }
+    }
+
+    async function syncFromCloud(showNotification = false) {
+        if (!sheetUrl) return;
+        updateSyncBadge("Načítám...", true);
+        try {
+            const response = await fetch(sheetUrl);
+            if (!response.ok) throw new Error("HTTP chyba " + response.status);
+            const cloudData = await response.json();
+            
+            if (cloudData && typeof cloudData === "object") {
+                // Sloučení dat (cloud má přednost, lokální unikátní záznamy zůstanou)
+                const normalizedCloud = {};
+                for (const [key, val] of Object.entries(cloudData)) {
+                    if (val && (val.status === "calm" || val.status === "drama" || val.status === "peace")) {
+                        normalizedCloud[key] = {
+                            status: val.status === "peace" ? "calm" : val.status,
+                            note: val.note || ""
+                        };
+                    }
+                }
+                records = { ...records, ...normalizedCloud };
+                saveLocalData(false);
+                renderCalendar();
+                updateStats();
+                updateQuickTodayUI();
+                updateSyncBadge("Synchronizováno ✓", true);
+                if (showNotification) showToast("Data načtena z Google Tabulky");
+            }
+        } catch (err) {
+            console.error("Chyba při stahování z Google Sheets:", err);
+            updateSyncBadge("Chyba spojení", false);
+            if (showNotification) showToast("Nepodařilo se načíst data z Google Tabulky");
+        }
+    }
+
+    async function syncToCloud() {
+        if (!sheetUrl) return;
+        updateSyncBadge("Ukládám...", true);
+        try {
+            await fetch(sheetUrl, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(records)
+            });
+            updateSyncBadge("Synchronizováno ✓", true);
+        } catch (err) {
+            console.error("Chyba při odesílání do Google Sheets:", err);
+            updateSyncBadge("Chyba odeslání", false);
+        }
+    }
+
+    function exportJsonBackup() {
+        const dateStr = formatDateKey(today.getFullYear(), today.getMonth(), today.getDate());
+        const fileName = `den-bez-dramat-zaloha-${dateStr}.json`;
+        const blob = new Blob([JSON.stringify(records, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Záloha JSON stažena");
+    }
+
+    function importJsonBackup(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const imported = JSON.parse(e.target.result);
+                if (!imported || typeof imported !== "object") throw new Error("Neplatný formát");
+                
+                for (const [key, val] of Object.entries(imported)) {
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(key) && val && (val.status === "calm" || val.status === "drama" || val.status === "peace")) {
+                        records[key] = {
+                            status: val.status === "peace" ? "calm" : val.status,
+                            note: typeof val.note === "string" ? val.note : ""
+                        };
+                    }
+                }
+                saveLocalData(true);
+                renderCalendar();
+                updateStats();
+                updateQuickTodayUI();
+                showToast("Záloha úspěšně obnovena");
+            } catch (err) {
+                showToast("Soubor zálohy není platný JSON");
+            }
+            event.target.value = "";
+        };
+        reader.readAsText(file);
+    }
+
+    /* ==========================================================================
+       2. KALENDÁŘ A CYKLOVÁNÍ STAVŮ
+       ========================================================================== */
+    function formatDateKey(y, m, d) {
+        return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    }
+
+    function getTodayKey() {
+        return formatDateKey(today.getFullYear(), today.getMonth(), today.getDate());
+    }
+
+    function formatReadableDate(dateKey) {
+        const [y, m, d] = dateKey.split("-").map(Number);
+        return `${d}. ${MONTHS_GENITIVE_CZ[m - 1]} ${y}`;
+    }
+
+    function renderCalendar() {
+        const grid = document.getElementById("daysGrid");
+        const title = document.getElementById("monthTitle");
+        title.textContent = `${MONTHS_CZ[viewMonth]} ${viewYear}`;
+        grid.innerHTML = "";
+
+        const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+        const startOffset = firstDay === 0 ? 6 : firstDay - 1; // Po = 0 ... Ne = 6
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        const todayKey = getTodayKey();
+
+        // Prázdné buňky před 1. dnem
+        for (let i = 0; i < startOffset; i++) {
+            const empty = document.createElement("div");
+            empty.className = "day-cell empty";
+            grid.appendChild(empty);
+        }
+
+        // Dny v měsíci
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateKey = formatDateKey(viewYear, viewMonth, d);
+            const rec = records[dateKey];
+            const cell = document.createElement("button");
+            cell.type = "button";
+            cell.className = "day-cell";
+
+            if (dateKey === todayKey) cell.classList.add("today");
+            if (rec?.status === "calm") cell.classList.add("calm");
+            if (rec?.status === "drama") cell.classList.add("drama");
+
+            const numEl = document.createElement("span");
+            numEl.className = "day-num";
+            numEl.textContent = d;
+            cell.appendChild(numEl);
+
+            const iconEl = document.createElement("span");
+            iconEl.className = "day-status-icon";
+            if (rec?.status === "calm") {
+                iconEl.textContent = "✓";
+            } else if (rec?.status === "drama") {
+                iconEl.textContent = "✕";
+            }
+            cell.appendChild(iconEl);
+
+            if (rec?.note && rec.note.trim() !== "") {
+                const dot = document.createElement("span");
+                dot.className = "note-dot";
+                dot.title = rec.note;
+                cell.appendChild(dot);
+            }
+
+            cell.onclick = () => handleDayCellClick(dateKey);
+            grid.appendChild(cell);
+        }
+    }
+
+    /**
+     * Klikání na den cykluje mezi 3 stavy:
+     * a) Neoznačený -> b) Klidný den bez dramat (otevře modal s citátem a poznámkou)
+     * b) Klidný den -> c) Den s dramatem (otevře detail s možností poznámky)
+     * c) Den s dramatem -> a) Neoznačený den
+     */
+    function handleDayCellClick(dateKey) {
+        selectedDateKey = dateKey;
+        const current = records[dateKey];
+
+        if (!current) {
+            // a -> b (Klidný den)
+            records[dateKey] = { status: "calm", note: "" };
+            saveLocalData(true);
+            renderCalendar();
+            updateStats();
+            updateQuickTodayUI();
+            openDayModal(dateKey, true);
+        } else if (current.status === "calm") {
+            // b -> c (Den s dramatem)
+            records[dateKey] = { status: "drama", note: current.note || "" };
+            saveLocalData(true);
+            renderCalendar();
+            updateStats();
+            updateQuickTodayUI();
+            openDayModal(dateKey, false);
+        } else {
+            // c -> a (Neoznačený den)
+            delete records[dateKey];
+            saveLocalData(true);
+            renderCalendar();
+            updateStats();
+            updateQuickTodayUI();
+            showToast("Označení dne zrušeno");
+        }
+    }
+
+    function handleQuickToday() {
+        const todayKey = getTodayKey();
+        viewYear = today.getFullYear();
+        viewMonth = today.getMonth();
+        selectedDateKey = todayKey;
+
+        if (records[todayKey]?.status === "calm") {
+            openDayModal(todayKey, false);
+        } else {
+            records[todayKey] = { status: "calm", note: records[todayKey]?.note || "" };
+            saveLocalData(true);
+            renderCalendar();
+            updateStats();
+            updateQuickTodayUI();
+            openDayModal(todayKey, true);
+        }
+    }
+
+    function updateQuickTodayUI() {
+        const btn = document.getElementById("quickTodayBtn");
+        const btnText = document.getElementById("quickTodayBtnText");
+        const hint = document.getElementById("quickTodayHint");
+        const todayRec = records[getTodayKey()];
+
+        if (todayRec?.status === "calm") {
+            btn.classList.add("completed");
+            btnText.textContent = "Dnešek je odškrtnutý ✓";
+            hint.textContent = "Skvělá práce, dnes vládne klid.";
+        } else {
+            btn.classList.remove("completed");
+            btnText.textContent = "Dnešek byl bez dramat";
+            hint.textContent = "Jaký byl tvůj dnešní den?";
+        }
+    }
+
+    function changeMonth(delta) {
+        viewMonth += delta;
+        if (viewMonth < 0) {
+            viewMonth = 11;
+            viewYear--;
+        } else if (viewMonth > 11) {
+            viewMonth = 0;
+            viewYear++;
+        }
+        renderCalendar();
+        updateStats();
+    }
+
+    function goToToday() {
+        viewYear = today.getFullYear();
+        viewMonth = today.getMonth();
+        renderCalendar();
+        updateStats();
+    }
+
+    /* ==========================================================================
+       3. STATISTIKY
+       ========================================================================== */
+    function updateStats() {
+        // 1. Klidné dny tento zobrazený měsíc
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        let monthCalm = 0;
+        for (let d = 1; d <= daysInMonth; d++) {
+            const k = formatDateKey(viewYear, viewMonth, d);
+            if (records[k]?.status === "calm") monthCalm++;
+        }
+        const pct = Math.round((monthCalm / daysInMonth) * 100);
+        document.getElementById("statMonthCount").textContent = monthCalm;
+        document.getElementById("statMonthPercent").textContent = `(${pct} %)`;
+
+        // 2. Aktuální série (končící dneškem nebo včerejškem)
+        let streak = 0;
+        const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const todayK = formatDateKey(cursor.getFullYear(), cursor.getMonth(), cursor.getDate());
+
+        if (records[todayK]?.status !== "calm") {
+            cursor.setDate(cursor.getDate() - 1);
+        }
+
+        while (true) {
+            const k = formatDateKey(cursor.getFullYear(), cursor.getMonth(), cursor.getDate());
+            if (records[k]?.status === "calm") {
+                streak++;
+                cursor.setDate(cursor.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        document.getElementById("statCurrentStreak").textContent = streak;
+        document.getElementById("statCurrentUnit").textContent = pluralizeDays(streak);
+
+        // 3. Nejdelší rekord
+        const calmDates = Object.keys(records)
+            .filter(k => records[k]?.status === "calm")
+            .sort();
+
+        let maxStreak = 0;
+        let currentRun = 0;
+        let prevUtc = null;
+
+        for (const ds of calmDates) {
+            const [y, m, d] = ds.split("-").map(Number);
+            const utc = Date.UTC(y, m - 1, d);
+            if (prevUtc !== null && (utc - prevUtc) === 86400000) {
+                currentRun++;
+            } else {
+                currentRun = 1;
+            }
+            if (currentRun > maxStreak) maxStreak = currentRun;
+            prevUtc = utc;
+        }
+
+        document.getElementById("statLongestStreak").textContent = maxStreak;
+        document.getElementById("statLongestUnit").textContent = pluralizeDays(maxStreak);
+    }
+
+    function pluralizeDays(n) {
+        if (n === 1) return "den";
+        if (n >= 2 && n <= 4) return "dny";
+        return "dní";
+    }
+
+    /* ==========================================================================
+       4. MODÁLNÍ OKNO DNE A MOTIVAČNÍ CITÁTY
+       ========================================================================== */
+    function openDayModal(dateKey, pickNewQuote = true) {
+        const rec = records[dateKey];
+        if (!rec) return;
+
+        document.getElementById("dayModalDateLabel").textContent = formatReadableDate(dateKey);
+        document.getElementById("dayModalNote").value = rec.note || "";
+
+        const titleEl = document.getElementById("dayModalTitle");
+        const quoteBox = document.getElementById("dayModalQuoteBox");
+        const noteLabel = document.getElementById("dayModalNoteLabel");
+        const toggleBtn = document.getElementById("toggleStatusBtn");
+
+        if (rec.status === "calm") {
+            titleEl.textContent = "Klidný den bez dramat 🌿";
+            titleEl.style.color = "var(--calm-hover)";
+            quoteBox.style.display = "block";
+            noteLabel.textContent = "Krátká večerní poznámka / za co jsi dnes vděčný/á:";
+            toggleBtn.textContent = "Přepnout na „Bylo drama“";
+
+            if (pickNewQuote) {
+                const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+                document.getElementById("dayModalQuoteText").textContent = `„${q.text}“`;
+                document.getElementById("dayModalQuoteAuthor").textContent = `— ${q.author}`;
+            }
+        } else {
+            titleEl.textContent = "Den s dramatem (přeškrtnuto) 🌧️";
+            titleEl.style.color = "var(--drama-primary)";
+            quoteBox.style.display = "none";
+            noteLabel.textContent = "Co se dělo a co si z toho odnášíš? (volitelné):";
+            toggleBtn.textContent = "Změnit na „Den bez dramat“ ✓";
+        }
+
+        document.getElementById("dayModal").classList.add("open");
+    }
+
+    function saveDayModal() {
+        if (selectedDateKey && records[selectedDateKey]) {
+            records[selectedDateKey].note = document.getElementById("dayModalNote").value.trim();
+            saveLocalData(true);
+            renderCalendar();
+            showToast("Záznam dne uložen");
+        }
+        closeDayModal();
+    }
+
+    function toggleSelectedDayStatus() {
+        if (!selectedDateKey || !records[selectedDateKey]) return;
+        const currentNote = document.getElementById("dayModalNote").value.trim();
+        const nextStatus = records[selectedDateKey].status === "calm" ? "drama" : "calm";
+        records[selectedDateKey] = { status: nextStatus, note: currentNote };
+        saveLocalData(true);
+        renderCalendar();
+        updateStats();
+        updateQuickTodayUI();
+        openDayModal(selectedDateKey, nextStatus === "calm");
+    }
+
+    function clearSelectedDayStatus() {
+        if (!selectedDateKey) return;
+        delete records[selectedDateKey];
+        saveLocalData(true);
+        renderCalendar();
+        updateStats();
+        updateQuickTodayUI();
+        closeDayModal();
+        showToast("Označení dne zrušeno");
+    }
+
+    function closeDayModal() {
+        document.getElementById("dayModal").classList.remove("open");
+    }
+
+    /* ==========================================================================
+       5. REŽIM 'VYČISTIT HLAVU' (SOS AKTIVITY)
+       ========================================================================== */
+    function openSosModal() {
+        document.getElementById("sosModal").classList.add("open");
+        resetGrounding();
+        initSchulteGame();
+    }
+
+    function closeSosModal() {
+        stopBreathing();
+        stopSchulteTimer();
+        document.getElementById("sosModal").classList.remove("open");
+    }
+
+    function switchSosTab(tabName) {
+        document.querySelectorAll(".sos-tab").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll(".sos-panel").forEach(panel => {
+            panel.classList.toggle("active", panel.id === `panel-${tabName}`);
+        });
+
+        if (tabName !== "breathing") stopBreathing();
+        if (tabName === "schulte") initSchulteGame();
+    }
+
+    /* --- Aktivita A: Uzemnění 5-4-3-2-1 --- */
+    const GROUNDING_STEPS = [
+        { count: 5, title: "5 věcí, které právě VIDÍŠ", hint: "Rozhlédni se kolem sebe a v duchu je pojmenuj." },
+        { count: 4, title: "4 věci, kterých se můžeš DOTKNOUT", hint: "Vnímej povrch stolu, oblečení, podlahu pod nohama..." },
+        { count: 3, title: "3 zvuky, které právě SLYŠÍŠ", hint: "Zaposlouchej se do ticha, tikotu hodin nebo zvuků zvenku." },
+        { count: 2, title: "2 vůně, které CÍTÍŠ", hint: "Nadechni se nosem a vnímej vzduch kolem sebe." },
+        { count: 1, title: "1 věc jako CHUŤ nebo hluboký nádech", hint: "Vnímej chuť v ústech nebo se jen jednou zhluboka nadechni." }
+    ];
+    let groundingStepIdx = 0;
+    let groundingCheckedCount = 0;
+
+    function resetGrounding() {
+        groundingStepIdx = 0;
+        groundingCheckedCount = 0;
+        renderGroundingStep();
+    }
+
+    function renderGroundingStep() {
+        const container = document.getElementById("groundingContent");
+        const bar = document.getElementById("groundingBar");
+        const counter = document.getElementById("groundingStepCounter");
+
+        const totalItems = 15; // 5+4+3+2+1
+        let completedBefore = 0;
+        for (let i = 0; i < groundingStepIdx; i++) completedBefore += GROUNDING_STEPS[i].count;
+        const progressPct = Math.round(((completedBefore + groundingCheckedCount) / totalItems) * 100);
+        bar.style.width = `${progressPct}%`;
+
+        if (groundingStepIdx >= GROUNDING_STEPS.length) {
+            counter.textContent = "Hotovo!";
+            container.innerHTML = `
+                <div style="text-align:center;padding:24px 12px;background:var(--calm-bg);border-radius:16px;">
+                    <div style="font-size:2.2rem;margin-bottom:8px;">🌿</div>
+                    <h4 style="font-size:1.15rem;font-weight:700;color:var(--calm-hover);margin-bottom:6px;">Skvělá práce, jsi zpět v přítomnosti</h4>
+                    <p style="font-size:0.88rem;color:var(--text-muted);">Tvá mysl se ukotvila tady a teď. Nepříjemné myšlenky už nad tebou nemají takovou moc.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const step = GROUNDING_STEPS[groundingStepIdx];
+        counter.textContent = `Krok ${groundingStepIdx + 1} z 5`;
+
+        let itemsHtml = "";
+        for (let i = 1; i <= step.count; i++) {
+            const isDone = i <= groundingCheckedCount;
+            itemsHtml += `
+                <div class="grounding-item ${isDone ? "checked" : ""}" onclick="checkGroundingItem(${i})">
+                    <span class="grounding-circle">${isDone ? "✓" : i}</span>
+                    <span>Položka č. ${i} – vnímám ji tady a teď</span>
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="grounding-prompt">${step.title}</div>
+            <div class="grounding-hint">${step.hint}</div>
+            <div class="grounding-checks">${itemsHtml}</div>
+        `;
+    }
+
+    function checkGroundingItem(num) {
+        const step = GROUNDING_STEPS[groundingStepIdx];
+        if (num === groundingCheckedCount + 1) {
+            groundingCheckedCount++;
+            if (groundingCheckedCount >= step.count) {
+                setTimeout(() => {
+                    groundingStepIdx++;
+                    groundingCheckedCount = 0;
+                    renderGroundingStep();
+                }, 260);
+            }
+            renderGroundingStep();
+        }
+    }
+
+    /* --- Aktivita B: Postřehová mřížka (Schulte tabulka 1-25) --- */
+    let schulteTarget = 1;
+    let schulteStartTime = null;
+    let schulteInterval = null;
+
+    function initSchulteGame() {
+        stopSchulteTimer();
+        schulteTarget = 1;
+        schulteStartTime = null;
+        document.getElementById("schulteNextNum").textContent = "1";
+        document.getElementById("schulteTimer").textContent = "0.0 s";
+
+        const best = localStorage.getItem(SCHULTE_BEST_KEY);
+        document.getElementById("schulteBest").textContent = best ? `${best} s` : "—";
+
+        // Zamíchání čísel 1..25 (Fisher-Yates)
+        const nums = Array.from({ length: 25 }, (_, i) => i + 1);
+        for (let i = nums.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [nums[i], nums[j]] = [nums[j], nums[i]];
+        }
+
+        const grid = document.getElementById("schulteGrid");
+        grid.innerHTML = "";
+        nums.forEach(num => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "schulte-cell";
+            btn.textContent = num;
+            btn.onclick = () => handleSchulteClick(btn, num);
+            grid.appendChild(btn);
+        });
+    }
+
+    function handleSchulteClick(btn, num) {
+        if (num === 1 && schulteTarget === 1 && !schulteStartTime) {
+            schulteStartTime = performance.now();
+            schulteInterval = setInterval(() => {
+                const elapsed = ((performance.now() - schulteStartTime) / 1000).toFixed(1);
+                document.getElementById("schulteTimer").textContent = `${elapsed} s`;
+            }, 100);
+        }
+
+        if (num === schulteTarget) {
+            btn.classList.add("found");
+            schulteTarget++;
+            if (schulteTarget > 25) {
+                stopSchulteTimer();
+                const finalTime = ((performance.now() - schulteStartTime) / 1000).toFixed(1);
+                document.getElementById("schulteTimer").textContent = `${finalTime} s`;
+                document.getElementById("schulteNextNum").textContent = "Hotovo!";
+
+                const prevBest = parseFloat(localStorage.getItem(SCHULTE_BEST_KEY));
+                if (!prevBest || parseFloat(finalTime) < prevBest) {
+                    localStorage.setItem(SCHULTE_BEST_KEY, finalTime);
+                    document.getElementById("schulteBest").textContent = `${finalTime} s`;
+                    showToast(`Nový osobní rekord: ${finalTime} s! 🏆`);
+                } else {
+                    showToast(`Výborně! Čas: ${finalTime} s`);
+                }
+            } else {
+                document.getElementById("schulteNextNum").textContent = schulteTarget;
+            }
+        } else {
+            btn.classList.add("wrong");
+            setTimeout(() => btn.classList.remove("wrong"), 260);
+        }
+    }
+
+    function stopSchulteTimer() {
+        if (schulteInterval) {
+            clearInterval(schulteInterval);
+            schulteInterval = null;
+        }
+    }
+
+    /* --- Aktivita C: Krabicové dýchání (4-4-4-4) --- */
+    let breathRunning = false;
+    let breathTimer = null;
+    let breathPhaseIndex = 0;
+    let breathSecondsLeft = 4;
+
+    const BREATH_PHASES = [
+        { label: "Nádech", cls: "expand" },
+        { label: "Zadržet", cls: "hold-large" },
+        { label: "Výdech", cls: "shrink" },
+        { label: "Zadržet", cls: "hold-small" }
+    ];
+
+    function toggleBreathing() {
+        if (breathRunning) {
+            stopBreathing();
+        } else {
+            startBreathing();
+        }
+    }
+
+    function startBreathing() {
+        breathRunning = true;
+        breathPhaseIndex = 0;
+        breathSecondsLeft = 4;
+        document.getElementById("breathToggleBtn").textContent = "Zastavit dýchání";
+        applyBreathPhase();
+
+        breathTimer = setInterval(() => {
+            breathSecondsLeft--;
+            if (breathSecondsLeft <= 0) {
+                breathPhaseIndex = (breathPhaseIndex + 1) % BREATH_PHASES.length;
+                breathSecondsLeft = 4;
+                applyBreathPhase();
+            } else {
+                document.getElementById("breathCount").textContent = breathSecondsLeft;
+            }
+        }, 1000);
+    }
+
+    function applyBreathPhase() {
+        const phase = BREATH_PHASES[breathPhaseIndex];
+        const circle = document.getElementById("breathCircle");
+        circle.className = `breath-circle ${phase.cls}`;
+        document.getElementById("breathPhaseText").textContent = phase.label;
+        document.getElementById("breathCount").textContent = breathSecondsLeft;
+    }
+
+    function stopBreathing() {
+        breathRunning = false;
+        if (breathTimer) {
+            clearInterval(breathTimer);
+            breathTimer = null;
+        }
+        const circle = document.getElementById("breathCircle");
+        circle.className = "breath-circle";
+        document.getElementById("breathPhaseText").textContent = "Připrav se";
+        document.getElementById("breathCount").textContent = "4";
+        document.getElementById("breathToggleBtn").textContent = "Spustit dýchání";
+    }
+
+    /* ==========================================================================
+       POMOCNÉ FUNKCE (Modály, Toast)
+       ========================================================================== */
+    function closeModalOnBackdrop(event, modalId) {
+        if (event.target.id === modalId) {
+            if (modalId === "dayModal") closeDayModal();
+            if (modalId === "sosModal") closeSosModal();
+        }
+    }
+
+    let toastTimeout = null;
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2600);
+    }
+</script>
+</body>
+</html>
