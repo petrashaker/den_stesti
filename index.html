@@ -1591,37 +1591,23 @@ function loadLocalData() {
      * b) Klidný den -> c) Den s dramatem (otevře detail s možností poznámky)
      * c) Den s dramatem -> a) Neoznačený den
      */
-    function handleDayCellClick(dateKey) {
+function handleDayCellClick(dateKey) {
         selectedDateKey = dateKey;
         const current = records[dateKey];
 
         if (!current) {
-            // a -> b (Klidný den)
+            // Neoznačený den -> označí jako klidný a otevře okno pro poznámku
             records[dateKey] = { status: "calm", note: "" };
             saveLocalData(true);
             renderCalendar();
             updateStats();
             updateQuickTodayUI();
             openDayModal(dateKey, true);
-        } else if (current.status === "calm") {
-            // b -> c (Den s dramatem)
-            records[dateKey] = { status: "drama", note: current.note || "" };
-            saveLocalData(true);
-            renderCalendar();
-            updateStats();
-            updateQuickTodayUI();
-            openDayModal(dateKey, false);
         } else {
-            // c -> a (Neoznačený den)
-            delete records[dateKey];
-            saveLocalData(true);
-            renderCalendar();
-            updateStats();
-            updateQuickTodayUI();
-            showToast("Označení dne zrušeno");
+            // Už označený den -> jen otevře okno s poznámkou (stav nemění!)
+            openDayModal(dateKey, false);
         }
     }
-
     function handleQuickToday() {
         const todayKey = getTodayKey();
         viewYear = today.getFullYear();
