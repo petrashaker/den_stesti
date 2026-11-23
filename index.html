@@ -1419,7 +1419,7 @@ function loadLocalData() {
         if (!sheetUrl) return;
         updateSyncBadge("Načítám...", true);
         try {
-            const response = await fetch(sheetUrl);
+            const response = await fetch(sheetUrl + "?t=" + Date.now());
             if (!response.ok) throw new Error("HTTP chyba " + response.status);
             const cloudData = await response.json();
             
